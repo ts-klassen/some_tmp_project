@@ -4,8 +4,8 @@
 **学習トピック**：SELECT, ORDER BY
 
 ## 説明
-`products` テーブルから **全商品の `id`, `name`, `price`** を取得し、
-価格 (`price`) が高い順に並べて表示してください。
+`products` テーブルから **全商品の id, name, price** を取得し、
+価格 (price) が高い順に並べて表示してください。
 
 ## 制約
 * `ORDER BY price DESC` を必ず付けること
@@ -13,8 +13,8 @@
 
 ## 想定出力例（先頭 5 行）
 
-| id | name               | price |
-|----|--------------------|-------|
-| 23 | High‑end Laptop    | 240000 |
-| 45 | 4K Monitor         |  85000 |
-| …  | …                 |   …   |
+| id | name            | price |
+|----|-----------------|-------|
+| 23 | High-end Laptop | 240000 |
+| 45 | 4K Monitor      |  85000 |
+| …  | …              |   …   |

@@ -1,7 +1,7 @@
 # 05 各注文の合計個数
 
 **難易度**：★★  
-**学習トピック**：JOIN, GROUP BY
+**学習トピック**：JOIN, GROUP BY
 
 ## 説明
 `order_items` テーブルを元に、**注文 ID (`order_id`) ごとの

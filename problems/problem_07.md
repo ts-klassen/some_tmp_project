@@ -16,6 +16,6 @@
 
 | id | name            | price |
 |----|-----------------|-------|
-| 23 | High‑end Laptop |240000 |
+| 23 | High-end Laptop |240000 |
 | 45 | 4K Monitor      | 85000 |
 | …  | …              |  …   |

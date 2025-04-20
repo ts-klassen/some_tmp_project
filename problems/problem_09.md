@@ -16,6 +16,6 @@
 
 | id | name              |
 |----|-------------------|
-| 42 | Noise‑cancel Ear‑buds |
+| 42 | Noise-cancel Ear-buds |
 | 73 | Ergonomic Chair   |
 | …  | …                |

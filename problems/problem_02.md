@@ -12,8 +12,8 @@
 
 ## 想定出力例（先頭 5 行）
 
-| name              | price |
-|-------------------|-------|
-| Sticker Pack      |    80 |
-| USB‑C Cable       |   780 |
-| …                 |   …   |
+| name         | price |
+|--------------|-------|
+| Sticker Pack |    80 |
+| USB-C Cable  |   780 |
+| …            |   …   |

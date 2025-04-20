@@ -1,7 +1,7 @@
 # 06 商品別累計販売個数と売上 (Top 10)
 
 **難易度**：★★  
-**学習トピック**：JOIN, GROUP BY, 集約, LIMIT
+**学習トピック**：JOIN, GROUP BY, 集約, LIMIT
 
 ## 説明
 各商品 (`products`) について、
@@ -17,6 +17,6 @@
 
 | product_id | product_name      | total_quantity | total_sales |
 |------------|------------------|----------------|-------------|
-|        101 | High‑end Laptop  |            120 |   28,800,000|
+|        101 | High-end Laptop  |            120 |   28,800,000|
 |        234 | 4K Monitor       |            312 |   26,520,000|
 | …          | …               |            …   |         …   |
