@@ -68,6 +68,23 @@ INSERT INTO orders (user_id, ordered_at) VALUES
  (5, '2024-02-16'),
  (4, '2024-02-17');
 
+-- 2023 年の注文（Problem 16 用に追加）
+INSERT INTO orders (user_id, ordered_at) VALUES
+ (1, '2023-12-20'),
+ (2, '2023-12-25'),
+ (3, '2023-11-15'),
+ (4, '2023-11-18'),
+ (5, '2023-10-30');
+
+-- 2023 年注文の明細
+INSERT INTO order_items (order_id, product_id, quantity) VALUES
+ (11, 3, 1),
+ (11, 6, 1),
+ (12, 1, 2),
+ (13, 4, 1),
+ (14, 7, 3),
+ (15, 2, 5);
+
 -- 注文明細
 INSERT INTO order_items (order_id, product_id, quantity) VALUES
  (1, 1, 2),
