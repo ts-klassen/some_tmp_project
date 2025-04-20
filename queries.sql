@@ -199,5 +199,4 @@ JOIN products p ON p.id = oi.product_id
 GROUP BY ROLLUP (oi.product_id, date_trunc('month', o.ordered_at))
 ORDER BY oi.product_id NULLS LAST, month NULLS LAST;
 
--- 18 択一 10 問 (実行計画・隔離レベル基礎)
--- SQL は不要のため空欄
+

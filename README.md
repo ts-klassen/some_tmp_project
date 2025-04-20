@@ -20,8 +20,7 @@
 | `orders`       | `id` (PK), `user_id` (FK), `ordered_at` |  |
 | `order_items`  | `order_id` (FK), `product_id` (FK), `quantity` |  |
 
-サンプルデータは 1〜2 万件規模で配布済みです。テーブル定義や
-データ投入スクリプトの変更は不要です。
+サンプルデータはリポジトリに同梱済みです。テーブル定義やデータ投入スクリプトの変更は不要です。
 
 ---
 
@@ -39,7 +38,7 @@
 
 ---
 
-## 問題一覧（計 18 問）
+## 問題一覧（計 17 問）
 
 | # | 難度 | トピック | 説明 |
 |---|------|----------|------|
@@ -60,7 +59,6 @@
 | 15 | ★★★ | CASE | 価格帯 (低/中/高) 別件数集計 |
 | 16 | ★★★ | UNION | 2023 年と 2024 年の月別売上比較 |
 | 17 | ★★★ | ROLLUP | `(product_id, month)` ROLLUP で小計/総計 |
-| 18 | ★★★ | クイズ | 択一 10 問 (実行計画・隔離レベル基礎) |
 
 ★ = 易しい / ★★ = 標準 / ★★★ = やや難しい
 
@@ -73,9 +71,17 @@
    * 1 問につき 1 ステートメント
 2. 自動採点  
    ```bash
-   ./check.sh
+  ./check.sh        # 採点（pass/fail を表示）
    ```  
    合格ラインは **正答率 90% 以上**。不合格の場合は差分を確認して再提出してください。
+
+expected_results が未生成の場合は、DB を起動した後に
+
+```bash
+scripts/gen_expected_results.sh   # 正答 CSV を生成（Docker コンテナ内で実行）
+```
+
+を 1 度だけ実行してください。
 
 ---
 
@@ -109,14 +115,15 @@ Happy Querying!
 # 1. ビルド & 起動
 docker compose up -d
 
-# 2. psql で接続
-psql -h localhost -U postgres -d ecdb
+# 2. コンテナ内の psql に入る（任意）
+docker compose exec db bash -c "psql -U postgres -d ecdb"
 
-# 3. 解答を流す (例)
-\i queries.sql
+# 3. 解答を一括実行する例
+# 3. 解答を一括実行する例（ホスト側のファイルを渡す）
+cat queries.sql | docker compose exec db bash -c "psql -U postgres -d ecdb"
 ```
 
-* デフォルト接続情報
+* デフォルト接続情報（docker-compose.yml で指定）
   * host: `localhost`
   * port: `5432`
   * user: `postgres`
