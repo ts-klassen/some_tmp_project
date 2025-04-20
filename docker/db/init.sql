@@ -87,7 +87,3 @@ INSERT INTO order_items (order_id, product_id, quantity) VALUES
  (9, 4, 1),
  (10,8, 1);
 
--- 多少のデータ量を追加したい場合は generate_series を利用して自動生成することも可能
--- （例：ダミー注文を大量挿入してパフォーマンステストなど）
-
--- COMMIT; -- 不要。個別にトランザクションには入っていないため
