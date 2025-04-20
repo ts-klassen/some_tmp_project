@@ -99,9 +99,8 @@ docker compose up -d
 # 2. コンテナ内の psql に入る（任意）
 docker compose exec db bash -c "psql -U postgres -d ecdb"
 
-# 3. 解答を一括実行する例
 # 3. 解答を一括実行する例（ホスト側のファイルを渡す）
-cat queries.sql | docker compose exec db bash -c "psql -U postgres -d ecdb"
+cat queries.sql | docker compose exec -T db psql -U postgres -d ecdb
 ```
 
 * デフォルト接続情報（docker-compose.yml で指定）
