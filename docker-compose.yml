@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  db:
+    build: ./docker/db
+    container_name: ec_postgres
+    ports:
+      - "5432:5432"   # ホスト→コンテナのポートマッピング
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecdb
+    volumes:
+      - db_data:/var/lib/postgresql/data  # データ永続化
+
+volumes:
+  db_data:

@@ -97,3 +97,33 @@
 ---
 
 Happy Querying!
+
+---
+
+## 💻 迅速に試す：Docker で DB セットアップ
+
+リポジトリには Postgres コンテナを構築するための
+`docker-compose.yml` と初期化 SQL（スキーマ & サンプルデータ）が同梱されています。
+
+```bash
+# 1. ビルド & 起動
+docker compose up -d
+
+# 2. psql で接続
+psql -h localhost -U postgres -d ecdb
+
+# 3. 解答を流す (例)
+\i queries.sql
+```
+
+* デフォルト接続情報
+  * host: `localhost`
+  * port: `5432`
+  * user: `postgres`
+  * password: `postgres`
+  * database: `ecdb`
+
+停止するときは `docker compose down`。ボリュームを残すので
+テーブルや解答を再度ロードしてもデータは保持されます。
+
+---
