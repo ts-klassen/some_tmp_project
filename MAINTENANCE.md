@@ -31,6 +31,8 @@ git diff expected_results/
 * 合格ラインは 90% 以上。変更する場合は `threshold` の計算式を編集してください。
 * `check.sh --detail` もしくは `-d` で失敗した問題の `diff -u` の先頭 40 行を表示します。
 
+> ※ Docker Compose v2 (`docker compose`) を前提としています。旧 `docker‑compose` バイナリはサポートしません。
+
 ### 前提チェック
 `check.sh` は実行前に次を確認します。
 

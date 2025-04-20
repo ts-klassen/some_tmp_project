@@ -32,9 +32,9 @@ fi
 
 # `docker compose version` が成功するか確認
 # docker compose プラグイン存在チェック
-if ! docker compose version >/dev/null 2>&1; then
-  echo "Error: 'docker compose' command is unavailable." >&2
-  echo "Install the Docker Compose CLI plugin (docker-ce >= 20.10) or ensure it's in PATH." >&2
+# docker compose が使えるか確認
+if ! command -v docker compose >/dev/null 2>&1; then
+  echo "Error: 'docker compose' command not found in PATH." >&2
   exit 1
 fi
 
@@ -51,7 +51,6 @@ if ! docker compose ps --services >/tmp/compose_ps 2>/tmp/compose_err; then
 fi
 
 if ! grep -q '^db$' /tmp/compose_ps; then
-  cat /tmp/compose_err >&2
   echo "Error: Database container 'db' is not running." >&2
   echo "Run 'docker compose up -d' first, then rerun this script." >&2
   rm -f /tmp/compose_ps /tmp/compose_err

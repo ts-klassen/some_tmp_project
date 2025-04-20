@@ -11,7 +11,8 @@
 ## 制約
 * `SUM(quantity) OVER (PARTITION BY order_id)` を用いて分母を計算すること
 * パーセント計算は 100 x (個数 / 合計個数)
-* 出力は **`order_id` 昇順、同一注文内では `quantity_ratio_percent` 降順** とすること
+* 出力は必ず **`ORDER BY order_id, quantity_ratio_percent DESC`** を付け、
+  まず注文 ID (`order_id`) 昇順、その中で割合が **大きい順（降順）** に並べること
 
 ## 想定出力例（先頭 5 行）
 

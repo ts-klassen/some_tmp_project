@@ -8,8 +8,8 @@
 注文回数 (`order_count`) の **多い順** に表示してください。
 
 ## 制約
-* `ORDER BY order_count DESC` を付けること
-* 同数の場合は任意の並びで可
+* `ORDER BY order_count DESC, user_id` を付けること
+  * 集計値が同じ場合は `user_id` 昇順で並べて **tie‑break** してください
 
 ## 想定出力例（先頭 5 行）
 

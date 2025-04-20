@@ -15,8 +15,9 @@
 
 ## 制約
 * `GROUP BY ROLLUP (product_id, month)` を使うこと
-* NULL の行が集計行であることを判断できるように、
-  必要に応じて `GROUPING()` 関数を使っても構いません
+* 集計行の並びが `(詳細 → 小計 → 総計)` となるよう、
+  **`ORDER BY GROUPING(product_id), product_id, month`** を指定すること
+* `GROUPING()` 関数を使って NULL 行 (小計・総計) を区別しても構いません
 
 ## 想定出力例（抜粋）
 

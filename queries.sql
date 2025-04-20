@@ -26,7 +26,7 @@ SELECT u.id   AS user_id,
 FROM users  u
 LEFT JOIN orders o ON o.user_id = u.id
 GROUP BY u.id, u.name
-ORDER BY order_count DESC;
+ORDER BY order_count DESC, user_id;
 
 -- 05 各注文 ID と合計個数
 SELECT order_id,
@@ -147,15 +147,16 @@ ORDER BY product_id, sales_day;
 -- 14 過去 30 日で注文が無い日
 WITH recent_days AS (
     SELECT generate_series(
-        CURRENT_DATE - INTERVAL '29 day',
-        CURRENT_DATE,
+        DATE '2024-02-17' - INTERVAL '29 day',
+        DATE '2024-02-17',
         INTERVAL '1 day'
     )::date AS day
 ),
 order_days AS (
     SELECT DISTINCT o.ordered_at::date AS day
     FROM orders o
-    WHERE o.ordered_at >= CURRENT_DATE - INTERVAL '29 day'
+    WHERE o.ordered_at::date BETWEEN DATE '2024-02-17' - INTERVAL '29 day'
+                                 AND DATE '2024-02-17'
 )
 SELECT rd.day
 FROM recent_days rd
@@ -197,6 +198,6 @@ FROM order_items oi
 JOIN orders o   ON o.id = oi.order_id
 JOIN products p ON p.id = oi.product_id
 GROUP BY ROLLUP (oi.product_id, date_trunc('month', o.ordered_at))
-ORDER BY oi.product_id NULLS LAST, month NULLS LAST;
+ORDER BY GROUPING(oi.product_id), oi.product_id, month;
 
 
