@@ -89,11 +89,11 @@
 
 ---
 
-Happy Querying!
+それでは学習を始めましょう。
 
 ---
 
-## 迅速に試す：Docker で DB セットアップ
+## Docker で学習用データベースを起動する
 
 リポジトリには Postgres コンテナを構築するための
 `docker-compose.yml` と初期化 SQL（スキーマ & サンプルデータ）が同梱されています。
