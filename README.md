@@ -1,4 +1,4 @@
-# 8 時間完結 PostgreSQL SQL 演習課題
+# 8時間で完了する PostgreSQL SQL 演習課題
 
 ## 目的
 既存スキーマ（EC サイト 4 テーブル）を使い、**SQL の記述と理解**だけに集中して
@@ -96,4 +96,4 @@
 
 ---
 
-Happy Querying!  
+Happy Querying!
