@@ -8,6 +8,7 @@
 ## 1. 期待結果 (`expected_results`) の更新
 
 問題 SQL を修正・追加した場合は、正答 CSV を再生成してください。
+（番号付きコメント `-- 18` などを queries.sql に追加するだけで自動検出されます）
 
 ```bash
 # 1. DB コンテナ起動
@@ -22,7 +23,9 @@ git diff expected_results/
 
 ## 2. 自動採点スクリプト `check.sh`
 
-* 対象は 01〜17 問。`QUESTIONS` 配列で制御しています。
+* 対象問題数は `queries.sql` 内の最大番号をスクリプトが自動検出するため、
+  **問題を追加する際は `queries.sql` に `-- 18` のような区切りコメントを追加するだけ** で
+  採点対象に含まれます。ファイル名（expected_results/18.csv）も自動で生成されます。
 * `queries.sql` から番号付きコメント (`-- 01` など) を頼りに SQL を抽出し、
   コンテナ内の psql で実行 → `expected_results` と CSV 比較を行います。
 * 合格ラインは 90% 以上。変更する場合は `threshold` の計算式を編集してください。

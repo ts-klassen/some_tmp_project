@@ -126,4 +126,21 @@ cat queries.sql | docker compose exec db bash -c "psql -U postgres -d ecdb"
 停止するときは `docker compose down`。ボリュームを残すので
 テーブルや解答を再度ロードしてもデータは保持されます。
 
+### データを初期状態に戻したいとき
+
+演習中にテーブルを削除してしまった／データを壊した場合は、
+永続ボリュームを削除してコンテナを作り直すと、同梱の init.sql が
+再実行され初期データが復元されます。
+
+```bash
+# ボリュームも含めて停止・削除（データベースをリセット）
+docker compose down -v
+
+# 再起動
+docker compose up -d
+```
+
+これで `users`, `products`, `orders`, `order_items` の 4 テーブルが
+初期データ入りで再作成されます。
+
 ---

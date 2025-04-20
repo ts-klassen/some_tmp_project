@@ -33,7 +33,7 @@ if ! docker compose version >/dev/null 2>&1; then
 fi
 
 # DB コンテナが起動しているか & 権限エラー検出
-if ! docker compose ps --status running --services >/tmp/compose_ps 2>/tmp/compose_err; then
+if ! docker compose ps --services >/tmp/compose_ps 2>/tmp/compose_err; then
   if grep -qi "permission denied" /tmp/compose_err; then
     echo "Error: Permission denied while accessing Docker." >&2
     echo "Add your user to the 'docker' group or execute this script with sudo." >&2
@@ -45,6 +45,7 @@ if ! docker compose ps --status running --services >/tmp/compose_ps 2>/tmp/compo
 fi
 
 if ! grep -q '^db$' /tmp/compose_ps; then
+  cat /tmp/compose_err >&2
   echo "Error: Database container 'db' is not running." >&2
   echo "Run 'docker compose up -d' first, then rerun this script." >&2
   rm -f /tmp/compose_ps /tmp/compose_err
@@ -58,8 +59,23 @@ if [[ ! -f "$SQL_FILE" ]]; then
   exit 1
 fi
 
-# 評価対象は 01〜17
-QUESTIONS=( $(seq -w 1 17) )
+# ------------------------------
+# 評価対象問題番号を自動取得
+# queries.sql の先頭コメント "-- 01" などを検出して最大値を求めます。
+# ------------------------------
+
+TOTAL_Q=$(awk '/^-- [0-9][0-9]/ {sub(/^-- /, ""); if($1+0>max) max=$1+0} END{print max}' "$SQL_FILE")
+
+if [[ -z "$TOTAL_Q" || "$TOTAL_Q" -eq 0 ]]; then
+  echo "Error: Could not detect problem numbers in $SQL_FILE" >&2
+  exit 1
+fi
+
+# 01,02,03 … のゼロ埋め配列を生成
+QUESTIONS=()
+for n in $(seq 1 "$TOTAL_Q"); do
+  QUESTIONS+=( $(printf "%02d" "$n") )
+done
 
 ok=0
 total=${#QUESTIONS[@]}

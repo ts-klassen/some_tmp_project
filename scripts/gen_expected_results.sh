@@ -17,7 +17,11 @@ psql_in_docker() {
 # Create output dir
 mkdir -p "$OUT_DIR"
 
-for i in $(seq -w 1 17); do
+# 自動で最大番号を取得
+TOTAL_Q=$(awk '/^-- [0-9][0-9]/ {sub(/^-- /, ""); if($1+0>max) max=$1+0} END{print max}' "$SQL_FILE")
+
+for n in $(seq 1 "$TOTAL_Q"); do
+  i=$(printf "%02d" "$n")
   query=$(awk -v num="$i" -f scripts/extract_query.awk "$SQL_FILE" \
            | sed -e '/^\s*$/d' -e 's/;[[:space:]]*$//')
 
