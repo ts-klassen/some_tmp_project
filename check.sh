@@ -12,6 +12,12 @@
 
 set -euo pipefail
 
+# -------- command‑line options --------
+DETAIL=0
+if [[ ${1:-} == "--detail" || ${1:-} == "-d" ]]; then
+  DETAIL=1
+fi
+
 SQL_FILE="queries.sql"
 EXP_DIR="expected_results"
 
@@ -114,6 +120,11 @@ for q in "${QUESTIONS[@]}"; do
     ok=$((ok+1))
   else
     echo "NG (mismatch)"
+    if (( DETAIL == 1 )); then
+      echo "----- diff for Q$q -----"
+      diff -u "$EXP_DIR/$q.csv" "$outfile" | head -n 40
+      echo "------------------------"
+    fi
   fi
 done
 
