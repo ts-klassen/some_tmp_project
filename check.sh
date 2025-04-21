@@ -93,7 +93,7 @@ trap "rm -rf '$tmpdir'" EXIT
 # run psql inside container (docker compose)
 psql_in_docker() {
   local q="$1"
-  docker compose exec db bash -c "psql -U postgres -d ecdb -XAt -F',' -q -c \"$q\""
+  docker compose exec db bash -c "psql -U postgres -d ecdb -XAt -F',' -q -c \"$q\"" | tr -d '\r'
 }
 for q in "${QUESTIONS[@]}"; do
   echo -n "Q$q ... "

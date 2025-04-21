@@ -11,7 +11,7 @@ OUT_DIR="expected_results"
 
 psql_in_docker() {
     local q="$1"
-    docker compose exec db bash -c "psql -U postgres -d ecdb -XAt -F',' -q -c \"$q\""
+    docker compose exec db bash -c "psql -U postgres -d ecdb -XAt -F',' -q -c \"$q\"" | tr -d '\r'
 }
 
 # Create output dir

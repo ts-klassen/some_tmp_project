@@ -1,0 +1,7 @@
+# Ensure all text files use LF line endings in the repository
+* text eol=lf
+
+# Explicitly treat CSV, SQL and Markdown as text
+*.csv  text eol=lf
+*.sql  text eol=lf
+*.md   text eol=lf
