@@ -11,4 +11,12 @@
 * WITH 句を使用して CTE を定義すること
 * ORDER BY sales_year DESC, sales_month DESC と FETCH FIRST 3 ROWS ONLY を使用すること
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+ sales_year | sales_month | total_sales 
+------------+-------------+-------------
+       2024 |           2 |     1074180
+       2023 |          12 |       17260
+       2023 |          11 |      123400
+```

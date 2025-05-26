@@ -11,4 +11,12 @@
 * ORDER BY を使用すること
 * 出力カラムの順序と名前は `product_id`, `product_name`, `total_sales` とすること
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+ product_id |     product_name      | total_sales 
+------------+-----------------------+-------------
+          5 | High-end Laptop       |      480000
+          4 | 4K Monitor            |      425000
+          8 | Smartphone            |       98000
+``` 

@@ -12,3 +12,11 @@
 * WHERE, GROUP BY, HAVING などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ user_id | user_name | order_id 
+---------+-----------+----------
+       1 | Alice     |        1
+       1 | Alice     |        2
+       1 | Alice     |       11
+```

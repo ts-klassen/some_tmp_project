@@ -11,4 +11,10 @@
 * WHERE 内で NOT EXISTS を使用すること
 * JOIN、GROUP BY、HAVING などの追加句は使用しないこと
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+id | name | price 
+---+------+-------
+(0 rows)
+```

@@ -11,3 +11,11 @@
 * WHERE, GROUP BY, HAVING, JOINなどの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ id |         name          | price  
+----+-----------------------+--------
+  5 | High-end Laptop       | 240000
+  8 | Smartphone            |  98000
+  4 | 4K Monitor            |  85000
+```

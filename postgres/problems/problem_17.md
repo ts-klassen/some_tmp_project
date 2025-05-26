@@ -16,4 +16,12 @@
 小計行では sales_year と sales_month を空欄に、総計行では product_id、sales_year、sales_month を空欄にして表示してください。
 結果は product_id 昇順、sales_year 昇順、sales_month 昇順で並べ替えてください。
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+
+```
+ product_id | sales_year | sales_month | total_sales 
+------------+------------+-------------+-------------
+          1 |       2023 |          12 |        1560
+          1 |       2024 |           2 |        2340
+          1 |            |             |        3900
+```

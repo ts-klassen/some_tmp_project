@@ -11,7 +11,15 @@
 
 * サブクエリで注文数を集計すること
 * LEFT JOIN を使用すること
-* ORDER BY で注文数の降順かつユーザIDの昇順を指定すること
+* ORDER BY で注文数の降順を指定すること
 * 出力カラムのカラム名は `user_id`, `user_name`, `order_count` とすること
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+user_id | user_name | order_count 
+---------+-----------+-------------
+      6 | Frank     |            
+      1 | Alice     |           3
+      2 | Bob       |           3
+```

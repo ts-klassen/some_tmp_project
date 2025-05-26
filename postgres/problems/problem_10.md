@@ -15,4 +15,12 @@ SELECT 句では
 * GROUP BY と HAVING を使用すること
 * ORDER BY を使用すること
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+ product_id |  product_name   | total_sales 
+------------+-----------------+-------------
+          5 | High-end Laptop |      480000
+          4 | 4K Monitor      |      425000
+ (2 rows)
+```

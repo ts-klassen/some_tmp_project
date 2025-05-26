@@ -10,4 +10,12 @@
 * WHERE 内でサブクエリを使用すること
 * GROUP BY、HAVING、JOIN などの追加句は使用しないこと
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+ id |      name       | price  
+----+-----------------+--------
+  4 | 4K Monitor      |  85000
+  5 | High-end Laptop | 240000
+  8 | Smartphone      |  98000
+```

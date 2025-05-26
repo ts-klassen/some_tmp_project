@@ -13,3 +13,11 @@
 * GROUP BY, HAVING, JOINなどの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ id |     name     | price 
+----+--------------+-------
+  2 | Sticker Pack |    80
+  1 | USB-C Cable  |   780
+(2 rows)
+```

@@ -13,3 +13,11 @@
 * WHERE, ORDER BY, JOIN などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ name  
+-------
+ Grace
+ Eve
+ Frank
+```
