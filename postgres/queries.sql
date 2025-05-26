@@ -140,18 +140,18 @@ SELECT order_id,
 
 -- 16 過去 30 日間で注文がなかった日
 WITH RECURSIVE calendar AS (
-  SELECT CAST(DATE '2025-05-26' - INTERVAL '29' DAY AS DATE) AS day
+  SELECT CAST(DATE '2024-02-26' - INTERVAL '29' DAY AS DATE) AS day
   UNION ALL
   SELECT CAST(day + INTERVAL '1' DAY AS DATE)
     FROM calendar
-   WHERE day + INTERVAL '1' DAY <= DATE '2025-05-26'
+   WHERE day + INTERVAL '1' DAY <= DATE '2024-02-26'
 )
 SELECT day
   FROM calendar
  WHERE day NOT IN (
        SELECT CAST(ordered_at AS DATE)
          FROM orders
-        WHERE ordered_at >= DATE '2025-05-26' - INTERVAL '29' DAY
+        WHERE ordered_at >= DATE '2024-02-26' - INTERVAL '29' DAY
  )
  ORDER BY day;
 
