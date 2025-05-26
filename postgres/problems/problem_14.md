@@ -1,21 +1,29 @@
-# 14 過去 30 日で注文が無い日
+# 14 直近 3 か月の月別売上集計
+
+[<< Previous](problem_13.md) | [Next >>](problem_15.md)
 
 **難易度**：★★★  
-**学習トピック**：日付関数, サブクエリ, generate_series
+**学習トピック**：WITH, CTE, GROUP BY, ORDER BY
 
 ## 説明
-基準日 `2024-02-17` を含む **過去 30 日間 (2024-01-19〜2024-02-17)** について、
-`orders` が 1 件も存在しない日付を列挙してください。
+`orders`、`order_items`、`products` を結合し、注文日を年月単位で集計して月ごとの売上合計を求め、
+直近 3 か月分を年月降順で取得してください。
 
 ## 制約
-* `generate_series()` を使って日付リストを生成すること
-* 基準日は **'2024-02-17'::date** とし、動的な `CURRENT_DATE` は使わないこと
-* 結果は `day` 昇順で並べること
+* WITH 句を使用して CTE を定義すること
+* ORDER BY sales_year DESC, sales_month DESC と FETCH FIRST 3 ROWS ONLY を使用すること
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+ sales_year | sales_month | total_sales 
+------------+-------------+-------------
+       2024 |           2 |     1074180
+       2023 |          12 |       17260
+       2023 |          11 |      123400
+```
 
-| day        |
-|------------|
-| 2024-02-03 |
-| 2024-02-14 |
-| …          |
+---
+
+[<< Previous](problem_13.md) | [Next >>](problem_15.md)
+

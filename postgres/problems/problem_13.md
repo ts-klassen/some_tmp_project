@@ -1,20 +1,28 @@
-# 13 商品別 7 日移動平均売上
+# 13 一度も注文されていない商品の抽出
 
-**難易度**：★★★  
-**学習トピック**：ウィンドウ関数, 可変フレーム
+[<< Previous](problem_12.md) | [Next >>](problem_14.md)
+
+**難易度**：★★  
+**学習トピック**：SELECT, WHERE, サブクエリ
 
 ## 説明
-商品別 (`product_id`) に日次売上額を集計した上で、
-**直近 7 日 (当日を含む 7 日間) の移動平均** を求めてください。
+`order_items` テーブルに存在しない `product_id` を持つ商品の id、name、price を `products` テーブルから取得してください。
 
 ## 制約
-* ウィンドウフレーム `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW` を使用すること
-* 結果は `sales_day` 昇順で並べること
+
+* WHERE 内で NOT EXISTS を使用すること
+* JOIN、GROUP BY、HAVING などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ id |        name        | price 
+----+--------------------+-------
+ 14 | Ceramic Coffee Mug |  1200
+(1 row)
+```
 
-| product_id | sales_day  | moving_avg_7day |
-|------------|-----------|-----------------|
-|        101 | 2024-02-10 |        85,714  |
-|        101 | 2024-02-11 |        88,571  |
-| …          | …         |        …       |
+---
+
+[<< Previous](problem_12.md) | [Next >>](problem_14.md)
+

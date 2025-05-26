@@ -1,20 +1,33 @@
-# 10 月別売上サマリ → 直近 3 か月抽出
+# 10 売上が 100000 を超える商品の売上ランキング
+
+[<< Previous](problem_09.md) | [Next >>](problem_11.md)
 
 **難易度**：★★  
-**学習トピック**：WITH 句, 集約, 日付関数
+**学習トピック**：SELECT, JOIN, GROUP BY, HAVING, ORDER BY
 
 ## 説明
-まず `orders` と `order_items` から月別売上金額 (`total_sales`) を算出し、
-その後、**直近 3 か月** のみを抽出してください。
+`order_items` と `products` を `order_items.product_id = products.id` で結合し、各商品の売上（`order_items.quantity * products.price`）を計算します。
+SELECT 句では
+- `order_items.product_id` AS `product_id`
+- `products.name` AS `product_name`
+- `SUM(order_items.quantity * products.price)` AS `total_sales`
+を使用し、売上が 100000 を超える商品のみを `total_sales` 降順で取得してください。
 
 ## 制約
-* `WITH` 句を使って月別サマリを共通テーブルとして定義すること
-* 直近 3 か月は `ORDER BY month DESC LIMIT 3` で抽出しても可
+* GROUP BY と HAVING を使用すること
+* ORDER BY を使用すること
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+ 
+```
+ product_id |  product_name   | total_sales 
+------------+-----------------+-------------
+          5 | High-end Laptop |      480000
+          4 | 4K Monitor      |      425000
+ (2 rows)
+```
 
-| month      | total_sales |
-|------------|-------------|
-| 2024-02-01 | 12,345,678  |
-| 2024-01-01 | 11,234,567  |
-| 2023-12-01 |  9,876,543  |
+---
+
+[<< Previous](problem_09.md) | [Next >>](problem_11.md)
+

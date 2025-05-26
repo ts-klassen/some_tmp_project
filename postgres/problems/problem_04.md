@@ -1,20 +1,30 @@
-# 04 ユーザ毎の注文回数
+# 04 ユーザ名の重複排除一覧
+
+[<< Previous](problem_03.md) | [Next >>](problem_05.md)
 
 **難易度**：★  
-**学習トピック**：GROUP BY, 集約
+**学習トピック**：SELECT, DISTINCT
 
 ## 説明
-各ユーザ (`users`) ごとに何回注文したかを集計して、
-注文回数 (`order_count`) の **多い順** に表示してください。
+`users` テーブルからすべての `name` を取得し、重複を排除して一覧にしてください。
+
+**注**：この課題では `ORDER BY` の使用が禁止されているため、結果は任意の順序で返されます。出力の順序は保証されません。
 
 ## 制約
-* `ORDER BY order_count DESC, user_id` を付けること
-  * 集計値が同じ場合は `user_id` 昇順で並べて **tie‑break** してください
+* DISTINCT を使用すること
+* WHERE, ORDER BY, JOIN などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ name  
+-------
+ Grace
+ Eve
+ Frank
+```
 
-| user_id | user_name | order_count |
-|---------|-----------|-------------|
-|     101 | Alice     |          37 |
-|     212 | Bob       |          35 |
-| …       | …         |         …  |
+---
+
+[<< Previous](problem_03.md) | [Next >>](problem_05.md)
+

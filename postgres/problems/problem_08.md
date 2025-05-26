@@ -1,20 +1,28 @@
-# 08 一度も注文されていない商品
+# 08 全注文数と合計売上の算出
 
-**難易度**：★★  
-**学習トピック**：EXISTS / NOT EXISTS
+[<< Previous](problem_07.md) | [Next >>](problem_09.md)
+
+**難易度**：★  
+**学習トピック**：SELECT, JOIN, COUNT, SUM
 
 ## 説明
-`order_items` に一度も登場しない商品 (つまり、これまでに
-まったく購入されていない商品) を抽出してください。
+`order_items` と `products` を結合し、order_items テーブルの行数（全注文アイテム数）を `total_orders`、数量×価格の合計売上を `total_sales` として算出してください。
 
 ## 制約
-* `NOT EXISTS` もしくは `LEFT JOIN … IS NULL` を使うこと
-* 結果は `id` 昇順で並べること
+* JOIN を使用すること
+* COUNT, SUM を使用すること
+* GROUP BY などの追加句は使用しないこと
+* 出力カラム名は `total_orders`, `total_sales` とすること
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
+```
+ total_orders | total_sales 
+--------------+-------------
+           25 |     1215240
+(1 row)
+```
 
-| id | name           | price |
-|----|----------------|-------|
-|  9 | Rare Sticker   |   480 |
-| 34 | VR Headset     | 76000 |
-| …  | …             |   …   |
+---
+
+[<< Previous](problem_07.md) | [Next >>](problem_09.md)
+

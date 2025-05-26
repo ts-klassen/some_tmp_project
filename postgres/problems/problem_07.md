@@ -1,21 +1,30 @@
-# 07 平均価格より高い商品の一覧
+# 07 ユーザ別注文数の集計
 
-**難易度**：★★  
-**学習トピック**：サブクエリ
+[<< Previous](problem_06.md) | [Next >>](problem_08.md)
+
+**難易度**：★  
+**学習トピック**：SELECT, GROUP BY, COUNT
 
 ## 説明
-全商品の平均価格 (`AVG(price)`) を求め、
-その平均価格より高い商品の `id`, `name`, `price` を
-価格降順で表示してください。
+`orders` テーブルからユーザ (`user_id`) ごとの注文数を集計してください。
+
+取得列は `user_id` と `COUNT(*)` の結果を `order_count` という列名（エイリアス）で取得してください。
 
 ## 制約
-* サブクエリを使用すること
-* `ORDER BY price DESC` を付けること
+* GROUP BY を使用すること
+* WHERE, HAVING, JOIN, ORDER BY などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
+ 
+```
+ user_id | order_count 
+---------+-------------
+       3 |           3
+       5 |           3
+       4 |           3
+```
 
-| id | name            | price |
-|----|-----------------|-------|
-| 23 | High-end Laptop |240000 |
-| 45 | 4K Monitor      | 85000 |
-| …  | …              |  …   |
+---
+
+[<< Previous](problem_06.md) | [Next >>](problem_08.md)
+
