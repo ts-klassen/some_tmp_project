@@ -16,9 +16,3 @@ SELECT 句では
 * ORDER BY を使用すること
 
 ## 想定出力例
-
-| product_id | product_name     | total_sales |
-|------------|------------------|-------------|
-| 5          | High-end Laptop  | 28800000    |
-| 4          | 4K Monitor       | 26520000    |
-| …          | …                | …           |

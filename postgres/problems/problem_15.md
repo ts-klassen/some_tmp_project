@@ -10,11 +10,8 @@
 ## 制約
 * ウィンドウ関数を使用すること
 * PARTITION BY を使用すること
+ 
+取得するカラムは order_id、product_id、quantity_ratio_percent（各商品の数量割合を百分率で表す値）の3つとし、この順番で表示してください。  
+結果は order_id 昇順、quantity_ratio_percent 降順で並べ替えてください。
 
 ## 想定出力例
-
-| order_id | product_id | quantity_ratio_percent |
-|----------|------------|------------------------|
-| 1        | 2          | 60.00                  |
-| 1        | 1          | 40.00                  |
-| …        | …          | …                      |

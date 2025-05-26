@@ -11,11 +11,3 @@
 * 使用するキーワードは SELECT と FROM のみとすること
 
 ## 想定出力例（先頭 5 行）
-
-| id | name                 | price |
-|----|----------------------|-------|
-| 1  | USB-C Cable          |   780 |
-| 2  | Sticker Pack         |    80 |
-| 3  | Mechanical Keyboard  | 12500 |
-| 4  | 4K Monitor           | 85000 |
-| 5  | High-end Laptop      | 240000 |

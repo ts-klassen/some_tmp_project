@@ -11,11 +11,3 @@
 * WHERE, GROUP BY, HAVING, ORDER BY などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
-
-| order_id | product_name        | quantity |
-|----------|---------------------|----------|
-| 1        | USB-C Cable         | 2        |
-| 1        | Sticker Pack        | 3        |
-| 2        | 4K Monitor          | 1        |
-| 2        | Portable SSD        | 1        |
-| 3        | Mechanical Keyboard | 1        |
