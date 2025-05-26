@@ -1,5 +1,7 @@
 # 06 ユーザとその注文 ID の一覧（未注文のユーザも含む）
 
+[<< Previous](problem_05.md) | [Next >>](problem_07.md)
+
 **難易度**：★  
 **学習トピック**：SELECT, LEFT JOIN
 
@@ -20,3 +22,8 @@
        1 | Alice     |        2
        1 | Alice     |       11
 ```
+
+---
+
+[<< Previous](problem_05.md) | [Next >>](problem_07.md)
+

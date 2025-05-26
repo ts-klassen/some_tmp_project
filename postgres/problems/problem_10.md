@@ -1,5 +1,7 @@
 # 10 売上が 100000 を超える商品の売上ランキング
 
+[<< Previous](problem_09.md) | [Next >>](problem_11.md)
+
 **難易度**：★★  
 **学習トピック**：SELECT, JOIN, GROUP BY, HAVING, ORDER BY
 
@@ -24,3 +26,8 @@ SELECT 句では
           4 | 4K Monitor      |      425000
  (2 rows)
 ```
+
+---
+
+[<< Previous](problem_09.md) | [Next >>](problem_11.md)
+

@@ -1,5 +1,7 @@
 # 09 ユーザ別注文数ランキング
 
+[<< Previous](problem_08.md) | [Next >>](problem_10.md)
+
 **難易度**：★★  
 **学習トピック**：SELECT, LEFT JOIN, サブクエリ, ORDER BY
 
@@ -11,7 +13,7 @@
 
 * サブクエリで注文数を集計すること
 * LEFT JOIN を使用すること
-* ORDER BY で注文数の降順を指定すること
+* ORDER BY で注文数の降順、ユーザIDの昇順を指定すること
 * 出力カラムのカラム名は `user_id`, `user_name`, `order_count` とすること
 
 ## 想定出力例（先頭 5 行）
@@ -23,3 +25,8 @@ user_id | user_name | order_count
       1 | Alice     |           3
       2 | Bob       |           3
 ```
+
+---
+
+[<< Previous](problem_08.md) | [Next >>](problem_10.md)
+

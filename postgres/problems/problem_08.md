@@ -1,5 +1,7 @@
 # 08 全注文数と合計売上の算出
 
+[<< Previous](problem_07.md) | [Next >>](problem_09.md)
+
 **難易度**：★  
 **学習トピック**：SELECT, JOIN, COUNT, SUM
 
@@ -19,3 +21,8 @@
            25 |     1215240
 (1 row)
 ```
+
+---
+
+[<< Previous](problem_07.md) | [Next >>](problem_09.md)
+

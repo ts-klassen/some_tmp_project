@@ -1,5 +1,7 @@
 # 04 ユーザ名の重複排除一覧
 
+[<< Previous](problem_03.md) | [Next >>](problem_05.md)
+
 **難易度**：★  
 **学習トピック**：SELECT, DISTINCT
 
@@ -21,3 +23,8 @@
  Eve
  Frank
 ```
+
+---
+
+[<< Previous](problem_03.md) | [Next >>](problem_05.md)
+

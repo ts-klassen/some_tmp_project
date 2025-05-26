@@ -1,5 +1,7 @@
 # 12 平均価格より高い商品の抽出
 
+[<< Previous](problem_11.md) | [Next >>](problem_13.md)
+
 **難易度**：★★  
 **学習トピック**：SELECT, WHERE, サブクエリ
 
@@ -19,3 +21,8 @@
   5 | High-end Laptop | 240000
   8 | Smartphone      |  98000
 ```
+
+---
+
+[<< Previous](problem_11.md) | [Next >>](problem_13.md)
+

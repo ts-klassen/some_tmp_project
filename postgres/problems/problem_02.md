@@ -1,5 +1,7 @@
 # 02 価格が 1000 未満の商品一覧
 
+[<< Previous](problem_01.md) | [Next >>](problem_03.md)
+
 **難易度**：★  
 **学習トピック**：SELECT, WHERE, ORDER BY
 
@@ -21,3 +23,8 @@
   1 | USB-C Cable  |   780
 (2 rows)
 ```
+
+---
+
+[<< Previous](problem_01.md) | [Next >>](problem_03.md)
+

@@ -1,5 +1,7 @@
 # 07 ユーザ別注文数の集計
 
+[<< Previous](problem_06.md) | [Next >>](problem_08.md)
+
 **難易度**：★  
 **学習トピック**：SELECT, GROUP BY, COUNT
 
@@ -21,3 +23,8 @@
        5 |           3
        4 |           3
 ```
+
+---
+
+[<< Previous](problem_06.md) | [Next >>](problem_08.md)
+
