@@ -8,6 +8,7 @@
 `id`, `name`, `price` を価格の安い順に並べて取得してください。
 
 ## 制約
+
 * WHERE句とORDER BY句を使用すること
 * GROUP BY, HAVING, JOINなどの追加句は使用しないこと
 

@@ -7,6 +7,7 @@
 `order_items` テーブルに存在しない `product_id` を持つ商品を `products` テーブルから取得してください。
 
 ## 制約
+
 * WHERE 内で NOT IN を使用すること
 * JOIN、GROUP BY、HAVING などの追加句は使用しないこと
 

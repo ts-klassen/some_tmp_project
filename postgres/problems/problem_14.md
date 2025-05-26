@@ -9,7 +9,7 @@
 
 ## 制約
 * WITH 句を使用して CTE を定義すること
-* ORDER BY と FETCH FIRST 3 ROWS ONLY を使用すること
+* ORDER BY sales_year DESC, sales_month DESC と FETCH FIRST 3 ROWS ONLY を使用すること
 
 ## 想定出力例
 

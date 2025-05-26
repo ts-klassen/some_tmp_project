@@ -4,8 +4,12 @@
 **学習トピック**：SELECT, JOIN, GROUP BY, HAVING, ORDER BY
 
 ## 説明
-`order_items` と `products` を結合して各商品の売上（数量×価格）を計算し、
-売上が 100000 を超える商品のみを売上降順で取得してください。
+`order_items` と `products` を `order_items.product_id = products.id` で結合し、各商品の売上（`order_items.quantity * products.price`）を計算します。
+SELECT 句では
+- `order_items.product_id` AS `product_id`
+- `products.name` AS `product_name`
+- `SUM(order_items.quantity * products.price)` AS `total_sales`
+を使用し、売上が 100000 を超える商品のみを `total_sales` 降順で取得してください。
 
 ## 制約
 * GROUP BY と HAVING を使用すること

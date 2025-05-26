@@ -8,7 +8,8 @@ SELECT id, name, price
 -- 02 価格が 1000 未満の商品一覧
 SELECT id, name, price
   FROM products
- WHERE price < 1000;
+ WHERE price < 1000
+ ORDER BY price ASC;
 
 -- 03 全商品の id, name, price を価格の高い順に一覧
 SELECT id, name, price
@@ -52,16 +53,16 @@ SELECT COUNT(*)                   AS total_orders,
 -- 09 ユーザ別注文数ランキング
 SELECT u.id      AS user_id,
        u.name    AS user_name,
-       o.order_count
+       order_counts.order_count
   FROM users          AS u
   LEFT JOIN (
     SELECT user_id,
            COUNT(*) AS order_count
       FROM orders
      GROUP BY user_id
-  ) AS o
-    ON u.id = o.user_id
- ORDER BY o.order_count DESC,
+  ) AS order_counts
+    ON u.id = order_counts.user_id
+ ORDER BY order_counts.order_count DESC,
           u.id;
 
 -- 10 売上が 100000 を超える商品の売上ランキング
@@ -101,9 +102,10 @@ SELECT id,
        name,
        price
   FROM products
- WHERE id NOT IN (
-       SELECT DISTINCT product_id
-         FROM order_items
+ WHERE NOT EXISTS (
+       SELECT 1
+         FROM order_items oi
+        WHERE oi.product_id = products.id
  );
 
 -- 14 直近 3 か月の月別売上集計
