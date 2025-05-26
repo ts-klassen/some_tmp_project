@@ -24,4 +24,5 @@ SELECT u.id      AS user_id,
 
 - サブクエリで`orders`を`user_id`ごとに集計し、`order_count`を算出しています。
 - 外側のクエリでは`users`と`LEFT JOIN`し、注文のないユーザも含めています。
+- 注文のないユーザは`order_count`が`NULL`として表示されます。
 - `ORDER BY`で注文数の降順、その後`user_id`の昇順で並べ替えています。
