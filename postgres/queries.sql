@@ -138,19 +138,20 @@ SELECT order_id,
 
 -- 16 過去 30 日間で注文がなかった日
 WITH RECURSIVE calendar AS (
-  SELECT CAST(CURRENT_DATE - INTERVAL '29' DAY AS DATE) AS day
+  SELECT CAST(DATE '2025-05-26' - INTERVAL '29' DAY AS DATE) AS day
   UNION ALL
   SELECT CAST(day + INTERVAL '1' DAY AS DATE)
     FROM calendar
-   WHERE day + INTERVAL '1' DAY <= CURRENT_DATE
+   WHERE day + INTERVAL '1' DAY <= DATE '2025-05-26'
 )
 SELECT day
   FROM calendar
  WHERE day NOT IN (
        SELECT CAST(ordered_at AS DATE)
          FROM orders
-        WHERE ordered_at >= CURRENT_DATE - INTERVAL '29' DAY
- );
+        WHERE ordered_at >= DATE '2025-05-26' - INTERVAL '29' DAY
+ )
+ ORDER BY day;
 
 -- 17 商品別・月別売上（小計 / 総計 含む）
 SELECT p.id                                   AS product_id,
