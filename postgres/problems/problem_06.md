@@ -1,22 +1,21 @@
-# 06 商品別累計販売個数と売上 (Top 10)
+# 06 ユーザとその注文 ID の一覧（未注文のユーザも含む）
 
-**難易度**：★★  
-**学習トピック**：JOIN, GROUP BY, 集約, LIMIT
+**難易度**：★  
+**学習トピック**：SELECT, LEFT JOIN
 
 ## 説明
-各商品 (`products`) について、
-これまでに販売された **累計数量 (`total_quantity`)** と
-**累計売上額 (`total_sales`)** を計算し、
-売上額の高い順に **上位 10 件** を取得してください。
+`users` テーブルと `orders` テーブルを LEFT JOIN し、すべてのユーザとそれに紐付く `order_id` を一覧で取得してください。注文がないユーザも表示されるようにしてください。
 
 ## 制約
-* `ORDER BY total_sales DESC` を付けること
-* `LIMIT 10` を忘れないこと
+* LEFT JOIN を使用すること
+* WHERE, GROUP BY, HAVING などの追加句は使用しないこと
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
 
-| product_id | product_name      | total_quantity | total_sales |
-|------------|------------------|----------------|-------------|
-|        101 | High-end Laptop  |            120 |   28,800,000|
-|        234 | 4K Monitor       |            312 |   26,520,000|
-| …          | …               |            …   |         …   |
+| user_id | user_name | order_id |
+|---------|-----------|----------|
+| 1       | Alice     | 1        |
+| 1       | Alice     | 2        |
+| 2       | Bob       | 3        |
+| 2       | Bob       | 8        |
+| 3       | Carol     | 4        |

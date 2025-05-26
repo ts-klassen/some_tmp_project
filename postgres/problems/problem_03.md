@@ -1,17 +1,21 @@
-# 03 全注文数と合計売上額
+# 03 全商品の id, name, price を価格の高い順に一覧
 
 **難易度**：★  
-**学習トピック**：集約関数 (COUNT, SUM)
+**学習トピック**：SELECT, ORDER BY
 
 ## 説明
-サイト全体でこれまでに発生した **注文の件数** と
-**合計売上額 (数量 x 単価) ** を 1 行で取得してください。
+`products` テーブルから全商品の `id`, `name`, `price` を価格の高い順（降順）に取得してください。
 
 ## 制約
-* 結果列は `order_count`, `total_sales` の 2 列とすること
+* ORDER BY句を使用すること
+* WHERE, GROUP BY, HAVING, JOINなどの追加句は使用しないこと
 
-## 想定出力例
+## 想定出力例（先頭 5 行）
 
-| order_count | total_sales |
-|-------------|-------------|
-|  12,345     | 98,765,432  |
+| id | name                 | price   |
+|----|----------------------|---------|
+| 5  | High-end Laptop      | 240000  |
+| 4  | 4K Monitor           |  85000  |
+| 10 | Ergonomic Chair      |  45000  |
+| 7  | Portable SSD         |  12800  |
+| 3  | Mechanical Keyboard  |  12500  |

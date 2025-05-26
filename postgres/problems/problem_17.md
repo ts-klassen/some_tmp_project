@@ -1,29 +1,21 @@
-# 17 (product_id, month) ROLLUP で小計 / 総計
+# 17 商品別・月別売上（小計 / 総計 含む）
 
 **難易度**：★★★  
-**学習トピック**：GROUPING SET / ROLLUP
+**学習トピック**：SELECT, GROUPING SETS
 
 ## 説明
-`product_id`, `month` (注文日の月単位) の 2 軸で売上を集計し、
-`ROLLUP` を用いて
-
-1. `(product_id, month)` ごとの売上
-2. `product_id` 別の小計 (month が NULL)
-3. 全体の総計 (両方 NULL)
-
-を 1 つのクエリで取得してください。
+`orders`、`order_items`、`products` を結合し、
+商品ごとの月別売上、小計、全体総計を一度のクエリで取得してください。
 
 ## 制約
-* `GROUP BY ROLLUP (product_id, month)` を使うこと
-* 集計行の並びが `(詳細 → 小計 → 総計)` となるよう、
-  **`ORDER BY GROUPING(product_id), product_id, month`** を指定すること
-* `GROUPING()` 関数を使って NULL 行 (小計・総計) を区別しても構いません
+* GROUPING SETS を使用すること
+* ORDER BY を使用すること
 
-## 想定出力例（抜粋）
+## 想定出力例
 
-| product_id | month      | total_sales |
-|------------|-----------|-------------|
-|        101 | 2024-01-01 |   1,234,000 |
-|        101 | 2024-02-01 |   1,456,000 |
-|        101 | NULL       |   2,690,000 | ← 小計
-|       NULL | NULL       |  98,765,432 | ← 総計
+| product_id | sales_year | sales_month | total_sales |
+|------------|------------|-------------|-------------|
+| 1          | 2024       | 2           | 123456      |
+| 1          | 2024       |             | 234567      |
+| 1          |            |             | 358023      |
+| …          | …          | …           | …           |

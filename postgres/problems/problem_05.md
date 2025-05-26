@@ -1,19 +1,21 @@
-# 05 各注文の合計個数
+# 05 注文明細と商品名、数量の一覧
 
-**難易度**：★★  
-**学習トピック**：JOIN, GROUP BY
+**難易度**：★  
+**学習トピック**：SELECT, JOIN
 
 ## 説明
-`order_items` テーブルを元に、**注文 ID (`order_id`) ごとの
-合計数量 (`total_quantity`)** を求めてください。
+`order_items` テーブルと `products` テーブルを結合し、各注文の `order_id`, `product_name`, `quantity` を一覧で取得してください。
 
 ## 制約
-* 結果は `order_id` 昇順で並べること
+* JOIN を使用すること
+* WHERE, GROUP BY, HAVING, ORDER BY などの追加句は使用しないこと
 
 ## 想定出力例（先頭 5 行）
 
-| order_id | total_quantity |
-|----------|----------------|
-|      100 |             12 |
-|      101 |              1 |
-| …        |            …   |
+| order_id | product_name        | quantity |
+|----------|---------------------|----------|
+| 1        | USB-C Cable         | 2        |
+| 1        | Sticker Pack        | 3        |
+| 2        | 4K Monitor          | 1        |
+| 2        | Portable SSD        | 1        |
+| 3        | Mechanical Keyboard | 1        |

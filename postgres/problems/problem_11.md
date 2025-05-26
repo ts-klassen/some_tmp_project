@@ -1,19 +1,21 @@
-# 11 ユーザ別累計売上 & 順位
+# 11 売上上位 10 商品
 
 **難易度**：★★  
-**学習トピック**：ウィンドウ関数 (RANK)
+**学習トピック**：SELECT, JOIN, GROUP BY, ORDER BY, FETCH FIRST
 
 ## 説明
-ユーザごとの **累計売上額 (`total_sales`)** を求め、
-売上額が多い順に `RANK()` を使って順位 (`sales_rank`) を付けてください。
+`order_items` と `products` を結合して各商品の売上（数量×価格）を計算し、
+売上上位 10 商品を売上降順で取得してください。
 
 ## 制約
-* ウィンドウ関数 `RANK() OVER (ORDER BY …)` を使うこと
+* GROUP BY を使用すること
+* ORDER BY を使用すること
+* FETCH FIRST 10 ROWS ONLY（または LIMIT 10）を使用すること
 
-## 想定出力例（先頭 5 行）
+## 想定出力例
 
-| user_id | user_name | total_sales | sales_rank |
-|---------|-----------|-------------|------------|
-|     101 | Alice     | 5,678,900   |          1 |
-|     212 | Bob       | 4,321,000   |          2 |
-| …       | …         | …           | …          |
+| product_id | product_name     | total_sales |
+|------------|------------------|-------------|
+| 5          | High-end Laptop  | 28800000    |
+| 4          | 4K Monitor       | 26520000    |
+| …          | …                | …           |

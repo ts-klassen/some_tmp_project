@@ -1,20 +1,21 @@
-# 01 価格降順で全商品の一覧
+# 01 全商品の id, name, price 一覧
 
 **難易度**：★  
-**学習トピック**：SELECT, ORDER BY
+**学習トピック**：SELECT, FROM
 
 ## 説明
-`products` テーブルから **全商品の id, name, price** を取得し、
-価格 (price) が高い順に並べて表示してください。
+`products` テーブルから全商品の `id`, `name`, `price` を取得してください。
 
 ## 制約
-* `ORDER BY price DESC` を必ず付けること
-* NULL 値は存在しないものとします
+* WHERE, ORDER BY などの追加句は使用しないこと
+* 使用するキーワードは SELECT と FROM のみとすること
 
 ## 想定出力例（先頭 5 行）
 
-| id | name            | price |
-|----|-----------------|-------|
-| 23 | High-end Laptop | 240000 |
-| 45 | 4K Monitor      |  85000 |
-| …  | …              |   …   |
+| id | name                 | price |
+|----|----------------------|-------|
+| 1  | USB-C Cable          |   780 |
+| 2  | Sticker Pack         |    80 |
+| 3  | Mechanical Keyboard  | 12500 |
+| 4  | 4K Monitor           | 85000 |
+| 5  | High-end Laptop      | 240000 |

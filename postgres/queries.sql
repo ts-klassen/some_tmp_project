@@ -1,203 +1,170 @@
 # PostgreSQL SQL 演習課題 解答例
-# （番号付きコメントの直後に 1 ステートメントで記述してください）
+# （番号付きコメントの直後に 1 ステートメントで記述してください
 
--- 01 価格降順で全商品の id, name, price を表示
+-- 01 全商品の id, name, price 一覧
 SELECT id, name, price
-FROM products
-ORDER BY price DESC;
+  FROM products;
 
--- 02 1,000 円未満の商品名と価格を昇順表示
-SELECT name, price
-FROM products
-WHERE price < 1000
-ORDER BY price ASC;
-
--- 03 全注文数と合計売上額
-SELECT COUNT(DISTINCT o.id)    AS order_count,
-       SUM(oi.quantity * p.price) AS total_sales
-FROM orders       o
-JOIN order_items  oi ON oi.order_id = o.id
-JOIN products     p  ON p.id       = oi.product_id;
-
--- 04 ユーザ毎の注文回数 (降順)
-SELECT u.id   AS user_id,
-       u.name AS user_name,
-       COUNT(o.id) AS order_count
-FROM users  u
-LEFT JOIN orders o ON o.user_id = u.id
-GROUP BY u.id, u.name
-ORDER BY order_count DESC, user_id;
-
--- 05 各注文 ID と合計個数
-SELECT order_id,
-       SUM(quantity) AS total_quantity
-FROM order_items
-GROUP BY order_id
-ORDER BY order_id;
-
--- 06 商品別累計販売個数と売上 (Top10)
-SELECT p.id   AS product_id,
-       p.name AS product_name,
-       SUM(oi.quantity)               AS total_quantity,
-       SUM(oi.quantity * p.price)     AS total_sales
-FROM products     p
-JOIN order_items  oi ON oi.product_id = p.id
-GROUP BY p.id, p.name
-ORDER BY total_sales DESC
-LIMIT 10;
-
--- 07 平均価格より高い商品の一覧
+-- 02 価格が 1000 未満の商品一覧
 SELECT id, name, price
-FROM products
-WHERE price > (SELECT AVG(price) FROM products)
-ORDER BY price DESC;
+  FROM products
+ WHERE price < 1000;
 
--- 08 一度も注文されていない商品
-SELECT p.id, p.name, p.price
-FROM products p
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM order_items oi
-    WHERE oi.product_id = p.id
-)
-ORDER BY p.id;
+-- 03 全商品の id, name, price を価格の高い順に一覧
+SELECT id, name, price
+  FROM products
+ ORDER BY price DESC;
 
--- 09 「A さんが買ったが B さんが買っていない」商品
-WITH a_products AS (
-    SELECT DISTINCT p.id
-    FROM products p
-    JOIN order_items oi ON oi.product_id = p.id
-    JOIN orders o       ON o.id = oi.order_id
-    JOIN users  u       ON u.id = o.user_id
-    WHERE u.name = 'A'
-),
-     b_products AS (
-    SELECT DISTINCT p.id
-    FROM products p
-    JOIN order_items oi ON oi.product_id = p.id
-    JOIN orders o       ON o.id = oi.order_id
-    JOIN users  u       ON u.id = o.user_id
-    WHERE u.name = 'B'
-)
-SELECT p.id, p.name
-FROM products p
-WHERE p.id IN (SELECT id FROM a_products)
-  AND p.id NOT IN (SELECT id FROM b_products)
-ORDER BY p.id;
+-- 04 ユーザ名の重複排除一覧
+SELECT DISTINCT name
+  FROM users;
 
--- 10 月別売上サマリ → 直近 3 か月抽出
-WITH monthly_sales AS (
-    SELECT date_trunc('month', o.ordered_at)::date AS month,
-           SUM(oi.quantity * p.price)              AS total_sales
-    FROM orders o
-    JOIN order_items oi ON oi.order_id = o.id
-    JOIN products p     ON p.id       = oi.product_id
-    GROUP BY month
-)
-SELECT month, total_sales
-FROM monthly_sales
-ORDER BY month DESC
-LIMIT 3;
-
--- 11 ユーザ別累計売上 & 順位
-WITH user_sales AS (
-    SELECT u.id   AS user_id,
-           u.name AS user_name,
-           SUM(oi.quantity * p.price) AS total_sales
-    FROM users u
-    JOIN orders o       ON o.user_id = u.id
-    JOIN order_items oi ON oi.order_id = o.id
-    JOIN products p     ON p.id       = oi.product_id
-    GROUP BY u.id, u.name
-)
-SELECT user_id,
-       user_name,
-       total_sales,
-       RANK() OVER (ORDER BY total_sales DESC) AS sales_rank
-FROM user_sales
-ORDER BY sales_rank;
-
--- 12 注文内の商品ごとの数量割合 (%)
+-- 05 注文明細と商品名、数量の一覧
 SELECT oi.order_id,
-       oi.product_id,
-       ROUND(oi.quantity::numeric / SUM(oi.quantity) OVER (PARTITION BY oi.order_id) * 100, 2) AS quantity_ratio_percent
-FROM order_items oi
-ORDER BY oi.order_id, quantity_ratio_percent DESC;
+       p.name AS product_name,
+       oi.quantity
+  FROM order_items AS oi
+  JOIN products    AS p
+    ON oi.product_id = p.id;
 
--- 13 商品別 7 日移動平均売上
-WITH daily_sales AS (
-    SELECT oi.product_id,
-           date_trunc('day', o.ordered_at)::date AS sales_day,
-           SUM(oi.quantity * p.price)            AS daily_sales
-    FROM order_items oi
-    JOIN orders o   ON o.id = oi.order_id
-    JOIN products p ON p.id = oi.product_id
-    GROUP BY oi.product_id, sales_day
-)
-SELECT product_id,
-       sales_day,
-       AVG(daily_sales) OVER (
-           PARTITION BY product_id
-           ORDER BY sales_day
-           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-       ) AS moving_avg_7day
-FROM daily_sales
-ORDER BY product_id, sales_day;
+-- 06 ユーザとその注文 ID の一覧（未注文のユーザも含む）
+SELECT u.id      AS user_id,
+       u.name    AS user_name,
+       o.id      AS order_id
+  FROM users        AS u
+  LEFT JOIN orders AS o
+    ON u.id = o.user_id
+ ORDER BY u.id;
 
--- 14 過去 30 日で注文が無い日
-WITH recent_days AS (
-    SELECT generate_series(
-        DATE '2024-02-17' - INTERVAL '29 day',
-        DATE '2024-02-17',
-        INTERVAL '1 day'
-    )::date AS day
-),
-order_days AS (
-    SELECT DISTINCT o.ordered_at::date AS day
-    FROM orders o
-    WHERE o.ordered_at::date BETWEEN DATE '2024-02-17' - INTERVAL '29 day'
-                                 AND DATE '2024-02-17'
-)
-SELECT rd.day
-FROM recent_days rd
-LEFT JOIN order_days od ON od.day = rd.day
-WHERE od.day IS NULL
-ORDER BY rd.day;
+-- 07 ユーザ別注文数の集計
+SELECT user_id,
+       COUNT(*) AS order_count
+  FROM orders
+ GROUP BY user_id;
 
--- 15 価格帯 (低/中/高) 別件数集計
-SELECT CASE
-           WHEN price < 1000 THEN '低'
-           WHEN price < 10000 THEN '中'
-           ELSE '高'
-       END AS price_band,
-       COUNT(*) AS product_count
-FROM products
-GROUP BY price_band
-ORDER BY price_band;
+-- 08 全注文数と合計売上の算出
+SELECT COUNT(*)                   AS total_orders,
+       SUM(oi.quantity * p.price) AS total_sales
+  FROM order_items AS oi
+  JOIN products    AS p
+    ON oi.product_id = p.id;
 
--- 16 2023 年と 2024 年の月別売上比較
+-- 09 ユーザ別注文数ランキング
+SELECT u.id      AS user_id,
+       u.name    AS user_name,
+       o.order_count
+  FROM users          AS u
+  LEFT JOIN (
+    SELECT user_id,
+           COUNT(*) AS order_count
+      FROM orders
+     GROUP BY user_id
+  ) AS o
+    ON u.id = o.user_id
+ ORDER BY o.order_count DESC,
+          u.id;
+
+-- 10 売上が 100000 を超える商品の売上ランキング
+SELECT p.id      AS product_id,
+       p.name    AS product_name,
+       SUM(oi.quantity * p.price) AS total_sales
+  FROM products     AS p
+  JOIN order_items AS oi
+    ON p.id = oi.product_id
+ GROUP BY p.id, p.name
+HAVING SUM(oi.quantity * p.price) > 100000
+ ORDER BY total_sales DESC;
+
+-- 11 売上上位 10 商品
+SELECT p.id      AS product_id,
+       p.name    AS product_name,
+       SUM(oi.quantity * p.price) AS total_sales
+  FROM products     AS p
+  JOIN order_items AS oi
+    ON p.id = oi.product_id
+ GROUP BY p.id, p.name
+ ORDER BY total_sales DESC
+ FETCH FIRST 10 ROWS ONLY;
+
+-- 12 平均価格より高い商品の抽出
+SELECT id,
+       name,
+       price
+  FROM products
+ WHERE price > (
+       SELECT AVG(price)
+         FROM products
+ );
+
+-- 13 一度も注文されていない商品の抽出
+SELECT id,
+       name,
+       price
+  FROM products
+ WHERE id NOT IN (
+       SELECT DISTINCT product_id
+         FROM order_items
+ );
+
+-- 14 直近 3 か月の月別売上集計
 WITH monthly_sales AS (
-    SELECT date_trunc('month', o.ordered_at)::date AS month,
-           EXTRACT(YEAR FROM o.ordered_at)        AS year,
-           SUM(oi.quantity * p.price)             AS total_sales
-    FROM orders o
-    JOIN order_items oi ON oi.order_id = o.id
-    JOIN products p     ON p.id       = oi.product_id
-    WHERE EXTRACT(YEAR FROM o.ordered_at) IN (2023, 2024)
-    GROUP BY month, year
+  SELECT EXTRACT(YEAR  FROM o.ordered_at) AS sales_year,
+         EXTRACT(MONTH FROM o.ordered_at) AS sales_month,
+         SUM(oi.quantity * p.price)      AS total_sales
+    FROM orders       AS o
+    JOIN order_items AS oi
+      ON oi.order_id = o.id
+    JOIN products    AS p
+      ON p.id = oi.product_id
+   GROUP BY EXTRACT(YEAR  FROM o.ordered_at),
+            EXTRACT(MONTH FROM o.ordered_at)
 )
-SELECT month, total_sales, year
-FROM monthly_sales
-ORDER BY month, year;
+SELECT sales_year,
+       sales_month,
+       total_sales
+  FROM monthly_sales
+ ORDER BY sales_year DESC,
+          sales_month DESC
+ FETCH FIRST 3 ROWS ONLY;
 
--- 17 (product_id, month) ROLLUP で小計/総計
-SELECT oi.product_id,
-       date_trunc('month', o.ordered_at)::date AS month,
-       SUM(oi.quantity * p.price)              AS total_sales
-FROM order_items oi
-JOIN orders o   ON o.id = oi.order_id
-JOIN products p ON p.id = oi.product_id
-GROUP BY ROLLUP (oi.product_id, date_trunc('month', o.ordered_at))
-ORDER BY GROUPING(oi.product_id), oi.product_id, month;
+-- 15 注文ごとの商品数量割合 (%)
+SELECT order_id,
+       product_id,
+       (quantity * 1.0)
+         / SUM(quantity) OVER (PARTITION BY order_id) * 100
+         AS quantity_ratio_percent
+  FROM order_items
+ ORDER BY order_id, quantity_ratio_percent DESC;
 
+-- 16 過去 30 日間で注文がなかった日
+WITH RECURSIVE calendar AS (
+  SELECT CAST(CURRENT_DATE - INTERVAL '29' DAY AS DATE) AS day
+  UNION ALL
+  SELECT CAST(day + INTERVAL '1' DAY AS DATE)
+    FROM calendar
+   WHERE day + INTERVAL '1' DAY <= CURRENT_DATE
+)
+SELECT day
+  FROM calendar
+ WHERE day NOT IN (
+       SELECT CAST(ordered_at AS DATE)
+         FROM orders
+        WHERE ordered_at >= CURRENT_DATE - INTERVAL '29' DAY
+ );
 
+-- 17 商品別・月別売上（小計 / 総計 含む）
+SELECT p.id                                   AS product_id,
+       EXTRACT(YEAR  FROM o.ordered_at)       AS sales_year,
+       EXTRACT(MONTH FROM o.ordered_at)       AS sales_month,
+       SUM(oi.quantity * p.price)            AS total_sales
+  FROM orders       AS o
+  JOIN order_items AS oi
+    ON oi.order_id = o.id
+  JOIN products    AS p
+    ON p.id = oi.product_id
+ GROUP BY GROUPING SETS (
+    (p.id, EXTRACT(YEAR  FROM o.ordered_at), EXTRACT(MONTH FROM o.ordered_at)),
+    (p.id),
+    ()
+ )
+ ORDER BY p.id, sales_year, sales_month;
