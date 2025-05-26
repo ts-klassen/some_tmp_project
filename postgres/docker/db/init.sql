@@ -58,7 +58,8 @@ INSERT INTO products (name, price) VALUES
   ('Ergonomic Chair',       45000),
   ('Desk Lamp',              1500),
   ('Webcam',                 5000),
-  ('Headphone Stand',        2000);
+  ('Headphone Stand',        2000),
+  ('Ceramic Coffee Mug',     1200);
 
 -- 注文
 INSERT INTO orders (user_id, ordered_at) VALUES
