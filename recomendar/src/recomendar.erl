@@ -2,26 +2,26 @@
 
 -export([
         main/1
-      , evaluate/0
     ]).
 
--define(NAMESPACE, <<"recomendar_v2">>).
+-define(NAMESPACE, <<"recomendar_v4">>).
 -define(CATEGORY_LIST, [<<"development">>, <<"networking">>, <<"administration">>]).
 
 main(_) ->
-    reset_recommendations(),
-    AllCategory = lists:map(fun(Id)->
-        Evaluate = evaluate(),
+    IdList = id_list(),
+    reset_recommendations(IdList),
+    AllCategory = lists_map(fun(Id)->
+        Evaluate = evaluate(IdList),
         add_recommendations_with_all_category(Id),
         Evaluate
-    end, id_list()),
-    reset_recommendations(),
-    CorrectCategory = lists:map(fun(Id)->
-        Evaluate = evaluate(),
+    end, lists:sublist(100, IdList)),
+    report(<<"all_category">>, AllCategory),
+    reset_recommendations(IdList),
+    CorrectCategory = lists_map(fun(Id)->
+        Evaluate = evaluate(IdList),
         add_recommendations(Id),
         Evaluate
-    end, id_list()),
-    report(<<"all_category">>, AllCategory),
+    end, lists:sublist(100, IdList)),
     report(<<"correct_category">>, CorrectCategory),
     {AllCategory, CorrectCategory}.
 
@@ -52,21 +52,20 @@ add_recommendations_with_all_category(Id) ->
         embe:positive(Id, Embe)
     end, ?CATEGORY_LIST).
 
-reset_recommendations() ->
+reset_recommendations(IdList) ->
     lists:map(fun(Id) ->
         lists:map(fun(Category) ->
             Embe = embe:recommendation_key(Category, embe:new(?NAMESPACE)),
             embe:neutral(Id, Embe)
         end, ?CATEGORY_LIST)
-    end, id_list()).
+    end, IdList).
 
-evaluate() ->
+evaluate(IdList) ->
     maps:from_list(lists:map(fun(Category)->
-        {Category, evaluate(Category)}
+        {Category, evaluate(Category, IdList)}
     end, ?CATEGORY_LIST)).
 
-evaluate(Category) ->
-    IdList = id_list(),
+evaluate(Category, IdList) ->
     N = length(IdList),
     Embe = embe:recommendation_key(Category, embe:new(?NAMESPACE)),
     Recommends = embe:recommendations(#{limit => 9999*N}, Embe),
@@ -110,4 +109,11 @@ insert_dataset(#{<<"question">>:=Input, <<"category">>:=Category, <<"vector">>:=
     Embe0 = embe:new(?NAMESPACE),
     Embe = Embe0#{ embeddings_function := fun(I) when I =:= Input -> Vector end },
     embe:add(#{input=>Input, category=>Category}, Embe).
+
+lists_map(Fun, List) ->
+    N = length(List),
+    lists:map(fun({I, E}) ->
+        io:format("~p/~p~n", [I, N]),
+        Fun(E)
+    end, lists:zip(lists:seq(1,N), List)).
 
