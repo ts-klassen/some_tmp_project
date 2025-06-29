@@ -62,7 +62,7 @@ shopt -u nullglob
 # 3. Global image
 # ----------------------------------------------------
 
-echo "[Global]   all_graphs -> plots/all_graphs.png"
+echo "[Global]   everything -> plots/everything.png"
 "${plot_script}" --all "${out_dir}/everything.png"
 
 echo "All plots generated in ${out_dir}"
