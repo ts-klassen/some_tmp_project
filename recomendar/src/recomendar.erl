@@ -9,19 +9,20 @@
 
 main(_) ->
     IdList = id_list(),
+    N = length(IdList),
     reset_recommendations(IdList),
     AllCategory = lists_map(fun(Id)->
         Evaluate = evaluate(IdList),
         add_recommendations_with_all_category(Id),
         Evaluate
-    end, lists:sublist(100, IdList)),
+    end, lists:sublist(IdList, 100)),
     report(<<"all_category">>, AllCategory),
     reset_recommendations(IdList),
     CorrectCategory = lists_map(fun(Id)->
         Evaluate = evaluate(IdList),
         add_recommendations(Id),
         Evaluate
-    end, lists:sublist(100, IdList)),
+    end, lists:sublist(IdList, 100)),
     report(<<"correct_category">>, CorrectCategory),
     {AllCategory, CorrectCategory}.
 
