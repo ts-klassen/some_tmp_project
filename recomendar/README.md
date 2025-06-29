@@ -144,14 +144,20 @@ priv/
 
 下記に評価結果の全プロットを示す（クリックで拡大）。
 
-| 画像 | 説明 |
-| ---- | ---- |
-| ![](plots/all_category.png) | 全カテゴリ学習時、カテゴリ別 転倒数 |
-| ![](plots/correct_category.png) | 正答カテゴリのみ学習時、カテゴリ別 転倒数 |
-| ![](plots/development.png) | `development` ← ディレクトリ横断で比較 |
-| ![](plots/networking.png) | `networking` ← 同上 |
-| ![](plots/administration.png) | `administration` ← 同上 |
-| ![](plots/everything.png) | 全 `.dat` を 1 枚に集約 |
+|No |定義域| 画像 | 説明 |
+|---|------| ---- | ---- |
+|1-1|0,100 | ![](plots/100/all_category.png) | 全カテゴリ学習時、カテゴリ別 転倒数 |
+|1-2|0,100 | ![](plots/100/correct_category.png) | 正答カテゴリのみ学習時、カテゴリ別 転倒数 |
+|1-3|0,100 | ![](plots/100/development.png) | `development` ← ディレクトリ横断で比較 |
+|1-4|0,100 | ![](plots/100/networking.png) | `networking` ← 同上 |
+|1-5|0,100 | ![](plots/100/administration.png) | `administration` ← 同上 |
+|1-6|0,100 | ![](plots/100/everything.png) | 全 `.dat` を 1 枚に集約 |
+|2-1|0,1200| ![](plots/1200/all_category.png) | 全カテゴリ学習時、カテゴリ別 転倒数 |
+|2-2|0,1200| ![](plots/1200/correct_category.png) | 正答カテゴリのみ学習時、カテゴリ別 転倒数 |
+|2-3|0,1200| ![](plots/1200/development.png) | `development` ← ディレクトリ横断で比較 |
+|2-4|0,1200| ![](plots/1200/networking.png) | `networking` ← 同上 |
+|2-5|0,1200| ![](plots/1200/administration.png) | `administration` ← 同上 |
+|2-6|0,1200| ![](plots/1200/everything.png) | 全 `.dat` を 1 枚に集約 |
 
 `plots/` フォルダは本リポジトリに含まれており、評価時点の結果を共有する。
 
