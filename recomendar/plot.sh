@@ -109,6 +109,10 @@ else
   output_image="${1:-priv/${graph_name}.png}"
 fi
 
+# Replace underscores in the displayed graph title (gnuplot interprets '_' as
+# subscript). Output filenames keep original underscores.
+graph_title_disp="${graph_title//_/ }"
+
 # ------------------------------------
 # Build the gnuplot "plot" command
 # ------------------------------------
@@ -127,7 +131,8 @@ for f in "${dat_files[@]}"; do
     title=$(basename "${f}" .dat)
   fi
 
-  plot_cmd+="'${f}' using 1:2 with linespoints lw 2 title '${title}', \\
+  legend_title="${title//_/ }"
+  plot_cmd+="'${f}' using 1:2 with linespoints lw 2 title '${legend_title}', \\
 "
 done
 
@@ -141,7 +146,7 @@ plot_cmd=${plot_cmd%, \\}
 gnuplot <<GNUPLOT
 set terminal pngcairo size 1024,768 enhanced font 'Verdana,10'
 set output '${output_image}'
-set title '${graph_title}'
+set title '${graph_title_disp}'
 set xlabel 'Number of registered preference'
 set ylabel 'Inversion count'
 set grid
