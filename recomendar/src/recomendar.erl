@@ -10,70 +10,77 @@
 main(_) ->
     IdList = id_list(),
     N = length(IdList),
-    reset_recommendations(IdList),
-    AllCategory = lists_map(fun(Id)->
-        Evaluate = evaluate(IdList),
-        add_recommendations_with_all_category(Id),
-        Evaluate
-    end, lists:sublist(IdList, 100)),
-    report(<<"all_category">>, AllCategory),
-    reset_recommendations(IdList),
-    CorrectCategory = lists_map(fun(Id)->
-        Evaluate = evaluate(IdList),
-        add_recommendations(Id),
-        Evaluate
-    end, lists:sublist(IdList, 100)),
-    report(<<"correct_category">>, CorrectCategory),
+
+    AllKey = embe_vector_db:uuid(),
+    CorrectKey = embe_vector_db:uuid(),
+    InitEvaluate = evaluate(IdList, 0, AllKey),
+
+    {AllCategory, CorrectCategory} = lists:foldl(fun({I, Id}, {All0, Correct0}) ->
+        add_recommendations(CorrectKey, Id),
+        Correct = [evaluate(IdList, I, CorrectKey) | Correct0],
+        add_recommendations_with_all_category(AllKey, Id),
+        All = [evaluate(IdList, I, AllKey) | All0],
+        io:format("~p/~p~n", [I, N]),
+        case I rem 100 of
+            0 ->
+                io:format("start report~n"),
+                report(<<"all_category">>, lists:reverse(All)),
+                report(<<"correct_category">>, lists:reverse(Correct)),
+                io:format("end report~n"),
+                ok;
+            _ ->
+                ok
+        end,
+        {All, Correct}
+    end, {[InitEvaluate], [InitEvaluate]}, lists:zip(lists:seq(1, N), IdList)),
+    io:format("start final report~n"),
+    report(<<"all_category">>, lists:reverse(AllCategory)),
+    report(<<"correct_category">>, lists:reverse(CorrectCategory)),
+    io:format("end final report~n"),
     {AllCategory, CorrectCategory}.
 
 report(Dir, Data) ->
     DirPath = filename:join(code:priv_dir(recomendar), Dir),
     file:make_dir(DirPath),
-    N = length(Data),
     lists:map(fun(Key)->
         Path = filename:join(DirPath, <<Key/binary, ".dat">>),
         TSV = iolist_to_binary(lists:map(fun(Elem)->
             {X, Y} = maps:get(Key, Elem),
-            [klsn_binstr:from_any(N-X), <<"\t">>, klsn_binstr:from_any(Y), <<"\n">>]
+            [klsn_binstr:from_any(X), <<"\t">>, klsn_binstr:from_any(Y), <<"\n">>]
         end, Data)),
         file:write_file(Path, TSV)
     end, ?CATEGORY_LIST).
     
 
-add_recommendations(Id) ->
+add_recommendations(Prefix, Id) ->
     CategoryList = maps:get(<<"category">>, embe:get(Id, embe:new(?NAMESPACE))),
     lists:map(fun(Category) ->
-        Embe = embe:recommendation_key(Category, embe:new(?NAMESPACE)),
+        Key = <<Prefix/binary, "_", Category/binary>>,
+        Embe = embe:recommendation_key(Key, embe:new(?NAMESPACE)),
         embe:positive(Id, Embe)
     end, CategoryList).
 
-add_recommendations_with_all_category(Id) ->
+add_recommendations_with_all_category(Prefix, Id) ->
     lists:map(fun(Category) ->
-        Embe = embe:recommendation_key(Category, embe:new(?NAMESPACE)),
+        Key = <<Prefix/binary, "_", Category/binary>>,
+        Embe = embe:recommendation_key(Key, embe:new(?NAMESPACE)),
         embe:positive(Id, Embe)
     end, ?CATEGORY_LIST).
 
-reset_recommendations(IdList) ->
-    lists:map(fun(Id) ->
-        lists:map(fun(Category) ->
-            Embe = embe:recommendation_key(Category, embe:new(?NAMESPACE)),
-            embe:neutral(Id, Embe)
-        end, ?CATEGORY_LIST)
-    end, IdList).
-
-evaluate(IdList) ->
+evaluate(IdList, I, Prefix) ->
     maps:from_list(lists:map(fun(Category)->
-        {Category, evaluate(Category, IdList)}
+        {Category, evaluate(Category, IdList, I, Prefix)}
     end, ?CATEGORY_LIST)).
 
-evaluate(Category, IdList) ->
+evaluate(Category, IdList, I, Prefix) ->
     N = length(IdList),
-    Embe = embe:recommendation_key(Category, embe:new(?NAMESPACE)),
+    Key = <<Prefix/binary, "_", Category/binary>>,
+    Embe = embe:recommendation_key(Key, embe:new(?NAMESPACE)),
     Recommends = embe:recommendations(#{limit => 9999*N}, Embe),
     IsMemberList = lists:map(fun(#{<<"metadata">>:=#{<<"category">>:=Expected}})->
         lists:member(Category, Expected)
     end, Recommends),
-    {length(Recommends), inversion_count(IsMemberList)}.
+    {I, inversion_count(IsMemberList)}.
 
 inversion_count(List) ->
     inversion_count(List, 0).
@@ -110,11 +117,4 @@ insert_dataset(#{<<"question">>:=Input, <<"category">>:=Category, <<"vector">>:=
     Embe0 = embe:new(?NAMESPACE),
     Embe = Embe0#{ embeddings_function := fun(I) when I =:= Input -> Vector end },
     embe:add(#{input=>Input, category=>Category}, Embe).
-
-lists_map(Fun, List) ->
-    N = length(List),
-    lists:map(fun({I, E}) ->
-        io:format("~p/~p~n", [I, N]),
-        Fun(E)
-    end, lists:zip(lists:seq(1,N), List)).
 
