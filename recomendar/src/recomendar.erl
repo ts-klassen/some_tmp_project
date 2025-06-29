@@ -8,6 +8,7 @@
 -define(CATEGORY_LIST, [<<"development">>, <<"networking">>, <<"administration">>]).
 
 main(_) ->
+    embe:init_setup(),
     IdList = id_list(),
     N = length(IdList),
 
