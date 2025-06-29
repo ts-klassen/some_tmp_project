@@ -1,73 +1,112 @@
 #!/usr/bin/env bash
 
-# This script generates a graph image from the .dat files produced by
-# src/recomendar.erl.  All .dat files located in priv/<graph_name>/ are plotted
-# on the same figure using gnuplot.
+# Script to visualise the evaluation data produced by src/recomendar.erl.
 #
-# Usage:
-#   ./plot.sh <graph_name> [output_image]
+# The evaluation generates tab-separated .dat files under priv/<graph_name>/
+# (e.g. priv/all_category/*.dat, priv/correct_category/*.dat).  Each file has
+# columns:
+#   1. number of registered preferences  (X)
+#   2. inversion count                   (Y)
 #
-#   <graph_name>   Directory inside priv/ that contains one or more .dat files.
-#   [output_image] Optional path of the resulting image (default:
-#                  priv/<graph_name>.png)
+# This helper plots the data with gnuplot.  Two modes are supported:
+#   1. Per-directory plot   →  ./plot.sh <graph_name>  [output.png]
+#   2. Global plot (all .dat)→ ./plot.sh --all         [output.png]
 #
-# The X-axis represents the number of registered preferences, and the Y-axis
-# represents the inversion count as described in src/recomendar.erl.
+# Defaults:
+#   per-directory  → priv/<graph_name>.png
+#   global         → priv/all_graphs.png
+#
+# Example:
+#   ./plot.sh all_category
+#   ./plot.sh correct_category ~/Desktop/correct.png
+#   ./plot.sh --all  # produces priv/all_graphs.png
 
 set -euo pipefail
 
-# ----------------------
-# Argument processing
-# ----------------------
+# ------------------------------------
+# Argument parsing / validation
+# ------------------------------------
 
-if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 <graph_name> [output_image]" >&2
+if (( $# < 1 )); then
+  echo "Usage: $0 <graph_name>|--all [output_image]" >&2
   exit 1
 fi
 
-graph_name="$1"
-data_dir="priv/${graph_name}"
+all_mode=false
 
-if [[ ! -d "${data_dir}" ]]; then
-  echo "Error: directory '${data_dir}' not found." >&2
-  exit 1
+case "$1" in
+  --all|-a)
+    all_mode=true
+    shift
+    ;;
+  *)
+    graph_name="$1"
+    shift
+    ;;
+esac
+
+if $all_mode; then
+  # Collect every .dat under priv/*/
+  shopt -s nullglob
+  dat_files=(priv/*/*.dat)
+  shopt -u nullglob
+
+  if (( ${#dat_files[@]} == 0 )); then
+    echo "Error: no .dat files found under priv/." >&2
+    exit 1
+  fi
+
+  graph_title="all_graphs"
+  output_image="${1:-priv/${graph_title}.png}"
+else
+  data_dir="priv/${graph_name}"
+
+  if [[ ! -d "${data_dir}" ]]; then
+    echo "Error: directory '${data_dir}' not found." >&2
+    exit 1
+  fi
+
+  shopt -s nullglob
+  dat_files=("${data_dir}"/*.dat)
+  shopt -u nullglob
+
+  if (( ${#dat_files[@]} == 0 )); then
+    echo "Error: no .dat files found in '${data_dir}'." >&2
+    exit 1
+  fi
+
+  graph_title="${graph_name}"
+  output_image="${1:-priv/${graph_name}.png}"
 fi
 
-# Discover .dat files
-shopt -s nullglob
-dat_files=("${data_dir}"/*.dat)
-shopt -u nullglob
-
-if (( ${#dat_files[@]} == 0 )); then
-  echo "Error: no .dat files found in '${data_dir}'." >&2
-  exit 1
-fi
-
-# Determine output path
-output_image="${2:-priv/${graph_name}.png}"
-
-# ----------------------
-# Build gnuplot "plot" line
-# ----------------------
+# ------------------------------------
+# Build the gnuplot "plot" command
+# ------------------------------------
 
 plot_cmd="plot "
-for file in "${dat_files[@]}"; do
-  base=$(basename "${file}" .dat)
-  # Append: 'file' using 1:2 with linespoints lw 2 title 'base', \
-  plot_cmd+="'${file}' using 1:2 with linespoints lw 2 title '${base}', \\
+for f in "${dat_files[@]}"; do
+  if $all_mode; then
+    rel=${f#priv/}     # remove leading priv/
+    title=${rel%.dat}  # strip .dat
+  else
+    title=$(basename "${f}" .dat)
+  fi
+
+  plot_cmd+="'${f}' using 1:2 with linespoints lw 2 title '${title}', \\
 "
 done
-# Trim the final comma and back-slash that were added by the last iteration.
+
+# Remove the trailing ", \\"
 plot_cmd=${plot_cmd%, \\}
 
-# ----------------------
-# Feed commands to gnuplot
-# ----------------------
+# ------------------------------------
+# Run gnuplot
+# ------------------------------------
 
 gnuplot <<GNUPLOT
 set terminal pngcairo size 1024,768 enhanced font 'Verdana,10'
 set output '${output_image}'
-set title '${graph_name}'
+set title '${graph_title}'
 set xlabel 'Number of registered preference'
 set ylabel 'Inversion count'
 set grid
