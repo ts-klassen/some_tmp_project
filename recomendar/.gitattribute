@@ -1,0 +1,3 @@
+*.png binary
+plots/*.png binary
+plots/*/*.png binary

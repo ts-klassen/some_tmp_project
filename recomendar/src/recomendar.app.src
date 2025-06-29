@@ -1,0 +1,15 @@
+{application, recomendar,
+ [{description, "An OTP library"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {applications,
+   [kernel,
+    stdlib,
+    embe
+   ]},
+  {env,[]},
+  {modules, [recomendar]},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
