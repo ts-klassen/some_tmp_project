@@ -1,0 +1,12 @@
+[{<<"gpte">>,
+  {git,"https://github.com/ts-klassen/gpte.git",
+       {ref,"8571cedcb514205f2b67179c0e26ed2f8b956550"}},
+  0},
+ {<<"jsone">>,
+  {git,"https://github.com/sile/jsone.git",
+       {ref,"e25344b6c202dd7ffe520c0fb623c1ac53b637df"}},
+  1},
+ {<<"klsn">>,
+  {git,"https://github.com/ts-klassen/klsn.git",
+       {ref,"add9402077e6d99366c019331e7853af8dd5a19a"}},
+  1}].
